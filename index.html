@@ -1,81 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Para ti, mi amor 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-      text-align: center;
-      overflow: hidden;
-      position: relative;
-      margin: 0;
+      height: 100vh; margin: 0;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      font-family: 'Segoe UI', sans-serif; color: #fff; text-align: center; overflow: hidden; position: relative;
     }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      animation: brillar 2s infinite alternate;
+    h1 { font-size: 2.5em; margin-bottom: 10px; animation: brillar 2s infinite alternate; }
+    p { font-size: 1.2em; margin-top: 5px; max-width: 600px; padding: 0 16px; }
+    img { width: 260px; height: auto; border-radius: 20px; box-shadow: 0 0 25px rgba(255,255,255,0.9); margin-bottom: 20px; animation: flotar 4s ease-in-out infinite; }
+    @keyframes flotar { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes brillar { from{ text-shadow:0 0 5px #fff } to{ text-shadow:0 0 20px #ffe6f7,0 0 30px #ff80bf } }
+    .elemento { position:absolute; font-size:2em; opacity:.9; animation: flotarAleatorio linear infinite; user-select:none; pointer-events:none; }
+    @keyframes flotarAleatorio { 0%{ transform:translateY(110vh) rotate(0); opacity:1 } 100%{ transform:translateY(-20vh) rotate(360deg); opacity:0 } }
+    /* Aviso inferior */
+    .aviso { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,.35); padding: 8px 14px; border-radius: 999px; font-size: .95em; backdrop-filter: blur(2px); }
+    /* Capa con botón GRANDE para activar sonido */
+    .overlay {
+      position: fixed; inset: 0; display: grid; place-items: center;
+      background: rgba(0,0,0,.35); backdrop-filter: blur(2px); z-index: 10;
     }
-    p {
-      font-size: 1.2em;
-      margin-top: 5px;
-      max-width: 600px;
-      padding: 0 16px;
+    .overlay button {
+      font-size: 1.05em; padding: 12px 18px; border: none; border-radius: 999px;
+      cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.25);
     }
-    img {
-      width: 260px;
-      height: auto;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(255,255,255,0.9);
-      margin-bottom: 20px;
-      animation: flotar 4s ease-in-out infinite;
+    /* Mensaje de error si no carga el MP3 */
+    .error {
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,.5); padding: 8px 12px; border-radius: 10px; font-size: .95em;
     }
-    @keyframes flotar {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-    @keyframes brillar {
-      from { text-shadow: 0 0 5px #fff; }
-      to { text-shadow: 0 0 20px #ffe6f7, 0 0 30px #ff80bf; }
-    }
-    .elemento {
-      position: absolute;
-      font-size: 2em;
-      opacity: 0.9;
-      animation: flotarAleatorio linear infinite;
-      user-select: none;
-      pointer-events: none;
-    }
-    @keyframes flotarAleatorio {
-      0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-    }
-    /* Aviso suave para activar sonido */
-    .aviso {
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.35);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 0.95em;
-      backdrop-filter: blur(2px);
-    }
+    a { color: #fff; text-decoration: underline; }
   </style>
 </head>
 <body>
   <h1>💖 Para ti, mi amor 💖</h1>
 
-  <!-- Foto -->
-  <img src="533306ae-cc98-4cc5-8002-12a7e20fd1ac.png" alt="Nuestra foto">
+  <img src="533306ae-cc98-4cc5-8002-12a7e20fd1ac.png" alt="Nuestra foto" />
 
   <p>
     Contigo todo es más bonito ✨.<br>
@@ -84,44 +49,67 @@
     Te amo con el alma 💕.
   </p>
 
-  <!-- Música: inicia en silencio (muted) y se activa con el primer clic -->
-  <audio id="musica" autoplay loop muted controls style="margin-top:12px;">
-    <source src="iframe-ricardo-montaner-besame-letra-pf258ayffum_uxtosPRb.mp3" type="audio/mpeg">
+  <!-- Audio: inicia silenciado para permitir autoplay -->
+  <audio id="musica" autoplay loop muted preload="auto" controls style="margin-top:12px;">
+    <source src="iframe-ricardo-montaner-besame-letra-pf258ayffum_uxtosPRb.mp3" type="audio/mpeg" />
     Tu navegador no soporta audio.
   </audio>
 
-  <!-- Aviso para que la persona haga clic y se active el sonido -->
-  <div id="aviso" class="aviso">Toca la pantalla para activar el sonido 🎶</div>
+  <!-- Aviso e overlay -->
+  <div id="aviso" class="aviso">Toca el botón para activar el sonido 🎶</div>
+  <div id="overlay" class="overlay">
+    <button id="activar">🎵 Activar música</button>
+  </div>
 
-  <!-- Mariposas y flores -->
+  <!-- Enlace directo al MP3 (solo se muestra si falla la carga) -->
+  <div id="errorBox" class="error" style="display:none;">
+    No pude cargar la música. Revisa el nombre del archivo o ábrelo aquí:
+    <a id="enlaceMP3" href="iframe-ricardo-montaner-besame-letra-pf258ayffum_uxtosPRb.mp3" target="_blank" rel="noopener">Abrir música</a>
+  </div>
+
   <script>
     const simbolos = ["🦋","🌸","🌼","🌹","💐","🌺","🌻"];
-
-    function crearElemento() {
-      const elem = document.createElement("div");
-      elem.classList.add("elemento");
-      elem.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
-      elem.style.left = Math.random() * 100 + "vw";
-      elem.style.fontSize = (20 + Math.random() * 30) + "px";
-      elem.style.animationDuration = (5 + Math.random() * 6) + "s";
-      document.body.appendChild(elem);
-      setTimeout(() => elem.remove(), 10000);
+    function crearElemento(){
+      const d=document, elem=d.createElement("div");
+      elem.className="elemento";
+      elem.textContent = simbolos[Math.floor(Math.random()*simbolos.length)];
+      elem.style.left = Math.random()*100 + "vw";
+      elem.style.fontSize = (20 + Math.random()*30) + "px";
+      elem.style.animationDuration = (5 + Math.random()*6) + "s";
+      d.body.appendChild(elem);
+      setTimeout(()=>elem.remove(), 10000);
     }
     setInterval(crearElemento, 500);
 
-    // Activar sonido al primer clic o toque
-    (function habilitarAudioUnaVez() {
+    // Activar sonido
+    (function(){
       const audio = document.getElementById("musica");
       const aviso = document.getElementById("aviso");
-      const activar = () => {
+      const overlay = document.getElementById("overlay");
+      const activarBtn = document.getElementById("activar");
+      const errorBox = document.getElementById("errorBox");
+
+      function activar(){
+        overlay.style.display = "none";
         audio.muted = false;
-        audio.play().catch(()=>{}); // por si el navegador pide interacción adicional
+        audio.play().catch(()=>{}); // por si necesita otra interacción
         if (aviso) aviso.remove();
         window.removeEventListener("click", activar);
         window.removeEventListener("touchstart", activar, {passive:true});
-      };
+        window.removeEventListener("keydown", activarPorTecla);
+      }
+      function activarPorTecla(e){
+        if(e.key==="Enter"||e.key===" "){ activar(); }
+      }
+      activarBtn.addEventListener("click", activar);
       window.addEventListener("click", activar);
       window.addEventListener("touchstart", activar, {passive:true});
+      window.addEventListener("keydown", activarPorTecla);
+
+      // Si falla la carga del audio, mostramos ayuda
+      audio.addEventListener("error", ()=>{
+        errorBox.style.display = "block";
+      });
     })();
   </script>
 </body>
