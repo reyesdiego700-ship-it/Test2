@@ -16,87 +16,113 @@
       text-align: center;
       overflow: hidden;
       position: relative;
+      margin: 0;
     }
-
     h1 {
       font-size: 2.5em;
       margin-bottom: 10px;
       animation: brillar 2s infinite alternate;
     }
-
     p {
       font-size: 1.2em;
       margin-top: 5px;
       max-width: 600px;
+      padding: 0 16px;
     }
-
     img {
       width: 260px;
       height: auto;
       border-radius: 20px;
-      box-shadow: 0px 0px 25px rgba(255,255,255,0.9);
+      box-shadow: 0 0 25px rgba(255,255,255,0.9);
       margin-bottom: 20px;
       animation: flotar 4s ease-in-out infinite;
     }
-
     @keyframes flotar {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
-
     @keyframes brillar {
-      from { text-shadow: 0px 0px 5px #fff; }
-      to { text-shadow: 0px 0px 20px #ffe6f7, 0px 0px 30px #ff80bf; }
+      from { text-shadow: 0 0 5px #fff; }
+      to { text-shadow: 0 0 20px #ffe6f7, 0 0 30px #ff80bf; }
     }
-
     .elemento {
       position: absolute;
       font-size: 2em;
       opacity: 0.9;
       animation: flotarAleatorio linear infinite;
+      user-select: none;
+      pointer-events: none;
     }
-
     @keyframes flotarAleatorio {
       0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
       100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
+    /* Aviso suave para activar sonido */
+    .aviso {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.35);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.95em;
+      backdrop-filter: blur(2px);
     }
   </style>
 </head>
 <body>
   <h1>💖 Para ti, mi amor 💖</h1>
 
-  <!-- Foto de ustedes -->
+  <!-- Foto -->
   <img src="533306ae-cc98-4cc5-8002-12a7e20fd1ac.png" alt="Nuestra foto">
 
   <p>
-    Contigo todo es más bonito ✨.  
-    Eres mi mariposa morada, la flor más linda del  jardín 🌸🦋.   
-    Gracias por hacer que cada día a tu lado sea un regalo divino.  
-    Te amo con el alma 💕. 
+    Contigo todo es más bonito ✨.<br>
+    Eres mi mariposa morada, la flor más linda del jardín 🌸🦋.<br>
+    Gracias por hacer que cada día a tu lado sea un regalo divino.<br>
+    Te amo con el alma 💕.
   </p>
 
-  <!-- Música de fondo -->
-  <audio autoplay loop>
+  <!-- Música: inicia en silencio (muted) y se activa con el primer clic -->
+  <audio id="musica" autoplay loop muted controls style="margin-top:12px;">
     <source src="iframe-ricardo-montaner-besame-letra-pf258ayffum_uxtosPRb.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
   </audio>
 
-  <!-- Script para mariposas y flores -->
+  <!-- Aviso para que la persona haga clic y se active el sonido -->
+  <div id="aviso" class="aviso">Toca la pantalla para activar el sonido 🎶</div>
+
+  <!-- Mariposas y flores -->
   <script>
     const simbolos = ["🦋","🌸","🌼","🌹","💐","🌺","🌻"];
-    
+
     function crearElemento() {
       const elem = document.createElement("div");
       elem.classList.add("elemento");
-      elem.innerHTML = simbolos[Math.floor(Math.random() * simbolos.length)];
+      elem.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
       elem.style.left = Math.random() * 100 + "vw";
       elem.style.fontSize = (20 + Math.random() * 30) + "px";
       elem.style.animationDuration = (5 + Math.random() * 6) + "s";
       document.body.appendChild(elem);
-
-      setTimeout(() => { elem.remove(); }, 10000);
+      setTimeout(() => elem.remove(), 10000);
     }
-
     setInterval(crearElemento, 500);
+
+    // Activar sonido al primer clic o toque
+    (function habilitarAudioUnaVez() {
+      const audio = document.getElementById("musica");
+      const aviso = document.getElementById("aviso");
+      const activar = () => {
+        audio.muted = false;
+        audio.play().catch(()=>{}); // por si el navegador pide interacción adicional
+        if (aviso) aviso.remove();
+        window.removeEventListener("click", activar);
+        window.removeEventListener("touchstart", activar, {passive:true});
+      };
+      window.addEventListener("click", activar);
+      window.addEventListener("touchstart", activar, {passive:true});
+    })();
   </script>
 </body>
 </html>
