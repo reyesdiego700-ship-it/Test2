@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Para ti, mi amor 💖</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      animation: brillar 2s infinite alternate;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-top: 5px;
+      max-width: 600px;
+    }
+
+    img {
+      width: 260px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0px 0px 25px rgba(255,255,255,0.9);
+      margin-bottom: 20px;
+      animation: flotar 4s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes brillar {
+      from { text-shadow: 0px 0px 5px #fff; }
+      to { text-shadow: 0px 0px 20px #ffe6f7, 0px 0px 30px #ff80bf; }
+    }
+
+    .elemento {
+      position: absolute;
+      font-size: 2em;
+      opacity: 0.9;
+      animation: flotarAleatorio linear infinite;
+    }
+
+    @keyframes flotarAleatorio {
+      0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Para ti, mi amor 💖</h1>
+
+  <!-- Foto de ustedes -->
+  <img src="533306ae-cc98-4cc5-8002-12a7e20fd1ac.png" alt="Nuestra foto">
+
+  <p>
+    Contigo todo es más bonito ✨.  
+    Eres mi mariposa morada, la flor más linda del  jardín 🌸🦋.   
+    Gracias por hacer que cada día a tu lado sea un regalo divino.  
+    Te amo con el alma 💕. 
+  </p>
+
+  <!-- Música de fondo -->
+  <audio autoplay loop>
+    <source src="iframe-ricardo-montaner-besame-letra-pf258ayffum_uxtosPRb.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Script para mariposas y flores -->
+  <script>
+    const simbolos = ["🦋","🌸","🌼","🌹","💐","🌺","🌻"];
+    
+    function crearElemento() {
+      const elem = document.createElement("div");
+      elem.classList.add("elemento");
+      elem.innerHTML = simbolos[Math.floor(Math.random() * simbolos.length)];
+      elem.style.left = Math.random() * 100 + "vw";
+      elem.style.fontSize = (20 + Math.random() * 30) + "px";
+      elem.style.animationDuration = (5 + Math.random() * 6) + "s";
+      document.body.appendChild(elem);
+
+      setTimeout(() => { elem.remove(); }, 10000);
+    }
+
+    setInterval(crearElemento, 500);
+  </script>
+</body>
+</html>
